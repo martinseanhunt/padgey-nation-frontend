@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { FaPlusSquare } from 'react-icons/fa'
 import { withRouter } from 'next/router'
 
-import { perPage } from '../config'
+import { PER_PAGE as perPage  } from '../config'
 import Pagination from './Pagination'
 import ListItems from './ListItems'
 

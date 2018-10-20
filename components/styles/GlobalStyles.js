@@ -143,6 +143,10 @@ export default createGlobalStyle`
       transition: 0.1s;
     }
 
+    .delete {
+      outline: none;
+    }
+
     .delete:hover {
       font-size: 1.9rem;
       top: 28px;

@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { Mutation, Query } from 'react-apollo'
 import gql from 'graphql-tag'
-import { FaPlusSquare } from 'react-icons/fa'
 import Router from 'next/router'
 
 import { LIST_ITEMS_CONNECTION_QUERY } from './Pagination'
-import howManyPages from '../helpers/howManyPages'
+import setPagesToBeRefreshed from '../utils/setPagesToBeRefreshed'
 
 const CREATE_LIST_ITEM = gql`
   mutation CREATE_LIST_ITEM($title: String!) {
@@ -19,22 +18,6 @@ const CREATE_LIST_ITEM = gql`
 class Create extends Component {
   state = {
     title: ''
-  }
-
-  update = (cache, payload, listItemsConnection) => {
-    // Work out number of pages 
-    const pages = howManyPages(listItemsConnection.count)
-
-    // Create array of all the page numbers
-    const pagesArray = [...Array(pages)].map((page, i) => i + 1) 
-
-    // Save that array to our local apollo cache
-    cache.writeData({
-      data: {
-        listItemPagesToRefetch: pagesArray,
-        lastListItemPageLoaded: null // Need to reset this or the current page we were on wont refetch
-      }
-    })
   }
 
   render() {
@@ -52,7 +35,7 @@ class Create extends Component {
               mutation={CREATE_LIST_ITEM} 
               variables={{ title: this.state.title }}
               refetchQueries={[{ query: LIST_ITEMS_CONNECTION_QUERY }]}
-              update={(cache, payload) => this.update(cache, payload, listItemsConnection)}
+              update={(cache) => setPagesToBeRefreshed(cache, listItemsConnection.count)}
               onCompleted={() => Router.push('/') }
             >
               {(createListItem, {error, loading}) => {
@@ -70,7 +53,7 @@ class Create extends Component {
                     />
                   </label>
 
-                  <button onClick={createListItem}>Create Item</button>
+                  <button disabled={loading} onClick={createListItem}>Create Item</button>
                   </>
                 )
               }}

@@ -15,7 +15,6 @@ const LIST_ITEMS_CONNECTION_QUERY = gql`
 `
 
 const Pagination = (props) => {
-  // REFACTOR I think it might be better to just pass this down ?
   const page = parseInt(props.router.query.page) || 1
 
   return (
@@ -33,7 +32,11 @@ const Pagination = (props) => {
               pathname: '/',
               query: { page: page - 1}
             }} prefetch>
-              <a className="prev" aria-disabled={page <= 1}><FaArrowLeft/></a>
+              <a 
+                className="prev" 
+                aria-disabled={page <= 1} 
+                onClick={() => props.onPageChange(page - 1)}
+              ><FaArrowLeft/></a>
             </Link>
 
             <p>Page {page} of {pages}</p>
@@ -43,7 +46,11 @@ const Pagination = (props) => {
               pathname: '/',
               query: { page: page + 1}
             }} prefetch>
-              <a className="next" aria-disabled={page >= pages}><FaArrowRight/></a>
+              <a 
+                className="next" 
+                aria-disabled={page >= pages} 
+                onClick={() => props.onPageChange(page + 1)}
+              ><FaArrowRight/></a>
             </Link>
         </div>
       )

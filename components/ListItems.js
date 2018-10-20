@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
-import { Mutation } from 'react-apollo'
+import { Mutation, Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import { FaTrashAlt } from 'react-icons/fa'
+
+import { LIST_ITEMS_CONNECTION_QUERY } from './Pagination'
+import setPagesToBeRefreshed from '../utils/setPagesToBeRefreshed'
 
 const DELETE_LIST_ITEM_MUTATION = gql`
   mutation DELETE_LIST_ITEM_MUTATION($id: ID!) {
@@ -13,6 +16,16 @@ const DELETE_LIST_ITEM_MUTATION = gql`
 `
 
 class ListItems extends Component {
+  update = cache => {
+    // Here in the item list we know that the connection query will always be in 
+    // our local cache so we can query the info directly from the cache in the update
+    // function which will save the query from being run for every rendered item like
+    // it would be if we used the Query component like in Create.js
+    
+    const { listItemsConnection: { count } } = cache.readQuery({ query: LIST_ITEMS_CONNECTION_QUERY })
+    setPagesToBeRefreshed(cache, count)
+  }
+  
   render() {
     return (
       <div>
@@ -27,6 +40,7 @@ class ListItems extends Component {
             <Mutation 
               mutation={DELETE_LIST_ITEM_MUTATION} 
               variables={{ id: listItem.id }}
+              update={this.update}
               >
               {(deleteListItem, {error, loading}) => {
                 if(error) console.log(error)
@@ -34,7 +48,8 @@ class ListItems extends Component {
                 return (
                   <button 
                     onClick={() => confirm('Are you sure?') && deleteListItem()}
-                    className="delete"  
+                    className="delete"
+                    disabled={loading}
                   >
                     <FaTrashAlt />
                   </button>

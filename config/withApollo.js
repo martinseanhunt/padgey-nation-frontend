@@ -14,11 +14,13 @@ export default withApollo(({ ctx, headers }) => (
         headers,
       });
     },
-    // Setting up localState defaults which we will use later...
     clientState: {
       defaults: {
-        listItemPagesToRefetch: [],
-        lastListItemPageLoaded: null,
+        pagesToRefetch: [],
+        listItemsToRender: [],
+        updateCurrentPage: false,
+        loadingPage: true,     
+        loadingError: false
       }
     }
   })

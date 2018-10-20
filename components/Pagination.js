@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import Link from 'next/link'
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa'
 import { withRouter } from 'next/router'
-import { PER_PAGE as perPage  } from '../config'
+import { PER_PAGE as perPage  } from '../config/config'
 
 const LIST_ITEMS_CONNECTION_QUERY = gql`
   query LIST_ITEMS_CONNECTION_QUERY {

@@ -8,9 +8,6 @@ export default withApollo(({ ctx, headers }) => (
     uri: GRAPHQL_URL, 
     request: operation => {
       operation.setContext({
-        fetchOptions: {
-          credentials: 'include',
-        },
         headers,
       });
     },

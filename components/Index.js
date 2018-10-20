@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Query, Mutation } from 'react-apollo'
+import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import Link from 'next/link'
 import { FaPlusSquare } from 'react-icons/fa'

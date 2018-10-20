@@ -6,11 +6,6 @@ import { GRAPHQL_URL } from './config'
 export default withApollo(({ ctx, headers }) => (
   new ApolloClient({ 
     uri: GRAPHQL_URL, 
-    request: operation => {
-      operation.setContext({
-        headers,
-      });
-    },
     clientState: {
       defaults: {
         pagesToRefetch: [],

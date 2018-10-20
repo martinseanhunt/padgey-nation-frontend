@@ -15,6 +15,7 @@ const LIST_ITEMS_CONNECTION_QUERY = gql`
 `
 
 const Pagination = (props) => {
+  // REFACTOR I think it might be better to just pass this down ?
   const page = parseInt(props.router.query.page) || 1
 
   return (
@@ -52,3 +53,4 @@ const Pagination = (props) => {
 )}
 
 export default withRouter(Pagination)
+export { LIST_ITEMS_CONNECTION_QUERY }

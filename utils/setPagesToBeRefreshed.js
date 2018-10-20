@@ -1,4 +1,4 @@
-import { PER_PAGE } from '../config'
+import { PER_PAGE } from '../config/config'
 
 export default async (cache, totalCount) => {  
   // Work out number of pages 

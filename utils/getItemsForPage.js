@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-import { PER_PAGE } from '../config'
+import { PER_PAGE } from '../config/config'
 
 const GET_LIST_ITEMS_QUERY = gql`
   query GET_LIST_ITEMS_QUERY($skip: Int = 0, $first: Int = ${PER_PAGE}) {

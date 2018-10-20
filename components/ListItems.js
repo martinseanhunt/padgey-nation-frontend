@@ -39,6 +39,7 @@ class ListItems extends Component {
               : listItem.title}
             <Mutation 
               mutation={DELETE_LIST_ITEM_MUTATION} 
+              refetchQueries={[{ query: LIST_ITEMS_CONNECTION_QUERY }]}
               variables={{ id: listItem.id }}
               update={this.update}
               >

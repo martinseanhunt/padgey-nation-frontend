@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
-import { FaPlusSquare } from 'react-icons/fa'
 import Router from 'next/router'
+
+import deleteListItemsFromCache from '../utils/deleteListItemsFromCache'
+import { LIST_ITEMS_CONNECTION_QUERY } from './Pagination'
 
 const CREATE_LIST_ITEM = gql`
   mutation CREATE_LIST_ITEM($title: String!) {
@@ -30,6 +32,8 @@ class Create extends Component {
           <Mutation 
             mutation={CREATE_LIST_ITEM} 
             variables={{ title: this.state.title }}
+            refetchQueries={[{ query: LIST_ITEMS_CONNECTION_QUERY }]}
+            update={deleteListItemsFromCache}
             onCompleted={() => Router.push('/') }
           >
             {(createListItem, {error, loading}) => {

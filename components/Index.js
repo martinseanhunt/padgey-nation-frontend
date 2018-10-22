@@ -20,7 +20,9 @@ const GET_LIST_ITEMS_QUERY = gql`
 
 class Index extends Component {  
   render() {
-    const page = this.props.router.query.page
+    const page = parseInt(this.props.router.query.page) || 1
+
+    console.log(page)
 
     return (
       <Query query={GET_LIST_ITEMS_QUERY} variables={{ skip: (page - 1) * perPage }}>
@@ -42,7 +44,7 @@ class Index extends Component {
 
               {loading 
                 ? <div className="loading-items"><p>Loading...</p></div> 
-                : <ListItems listItems={listItems}/>}
+                : <ListItems listItems={listItems} CURRENT_PAGE_QUERY={GET_LIST_ITEMS_QUERY} />}
               
               <Pagination />
             </div>

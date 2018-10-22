@@ -24,7 +24,7 @@ class Index extends Component {
     
     return (
       <Query query={GET_LIST_ITEMS_QUERY} variables={{ skip: (page - 1) * perPage }}>
-        {({data, error, loading}) => {
+        {({data, error, loading, refetch, networkStatus}) => {
           if(error) return console.log(error) || <div/>
 
           const { listItems } = data 
@@ -40,9 +40,9 @@ class Index extends Component {
                 </Link>
               </header>
 
-              {loading 
+              {(loading || networkStatus === 4)
                 ? <div className="loading-items"><p>Loading...</p></div> 
-                : <ListItems listItems={listItems}/>}
+                : <ListItems listItems={listItems} page={page} refetch={refetch}/>}
               
               <Pagination />
             </div>
@@ -54,3 +54,4 @@ class Index extends Component {
 }
 
 export default withRouter(Index)
+export { GET_LIST_ITEMS_QUERY }

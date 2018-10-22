@@ -32,8 +32,6 @@ class ListItems extends Component {
     // Filter the deleted ListItem out of the cached data - server returns deleted ListItem
     data.listItems = data.listItems.filter(i => i.id !== payload.data.deleteListItem.id)
 
-    console.log(data)
-
     // Write the current pages query with the deleted item filtered back to cache
     await cache.writeQuery({ query: GET_LIST_ITEMS_QUERY, data: data, variables: queryVars })
 

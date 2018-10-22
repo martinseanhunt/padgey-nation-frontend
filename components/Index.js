@@ -20,8 +20,8 @@ const GET_LIST_ITEMS_QUERY = gql`
 
 class Index extends Component {  
   render() {
-    const page = this.props.router.query.page
-
+    const page = this.props.router.query.page || 1
+    
     return (
       <Query query={GET_LIST_ITEMS_QUERY} variables={{ skip: (page - 1) * perPage }}>
         {({data, error, loading}) => {

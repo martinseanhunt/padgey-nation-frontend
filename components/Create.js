@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
-import { FaPlusSquare } from 'react-icons/fa'
 import Router from 'next/router'
 
 const CREATE_LIST_ITEM = gql`

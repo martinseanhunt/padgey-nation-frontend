@@ -27,22 +27,30 @@ class ListItems extends Component {
 
     // read cache for the page we need to change, GET_LIST_ITEMS_QUERY 
     // imported from Index.js
-    const data = cache.readQuery({ query: GET_LIST_ITEMS_QUERY, variables: queryVars })
+    const data = cache.readQuery({ 
+      query: GET_LIST_ITEMS_QUERY, variables: queryVars 
+    })
 
-    // Filter the deleted ListItem out of the cached data - server returns deleted ListItem
-    data.listItems = data.listItems.filter(i => i.id !== payload.data.deleteListItem.id)
+    // Filter the deleted ListItem out of the cached data 
+    // server returns deleted ListItem
+    data.listItems = data.listItems
+      .filter(i => i.id !== payload.data.deleteListItem.id)
 
-    // Write the current pages query with the deleted item filtered back to cache
-    await cache.writeQuery({ query: GET_LIST_ITEMS_QUERY, data: data, variables: queryVars })
+    // Write the current pages query with the deleted item 
+    // filtered back to cache
+    await cache.writeQuery({ 
+      query: GET_LIST_ITEMS_QUERY, data: data, variables: queryVars 
+    })
 
-    // Refetch the query for the current page - refetch is coming from the Query in Index.js
-    // and I've passed it down -- There's a bug in the current version of Apollo which is why
-    // we have to do this. For some reason refetchPage doesn't remember the variables like it
-    // says it should in the docs, so we're passing the variables manually.
+    // Refetch the query for the current page - refetch is coming from the  
+    // Query in Index.js and I've passed it down -- There's a bug in the current
+    // version of Apollo which is why we have to do this. For some reason refetch
+    // doesn't remember the variables like it says it should in the docs
+    // so we're passing the variables manually.
     this.props.refetch({ variables: queryVars })
 
-    // Remember that when using refetch() like this you need to handle the loading state 
-    // for refetching differently than usual... see: 
+    // Remember that when using refetch() like this you need to handle  
+    // the loading state for refetching differently than usual... see: 
     // https://www.apollographql.com/docs/react/essentials/queries.html#loading
   }
   

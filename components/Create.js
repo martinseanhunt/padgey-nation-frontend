@@ -56,6 +56,8 @@ class Create extends Component {
           <Mutation 
             mutation={CREATE_LIST_ITEM} 
             variables={{ title: this.state.title }}
+            // remember to refetch trhe pagination data so we can update
+            // the item count / pages
             refetchQueries={[{ query: LIST_ITEMS_CONNECTION_QUERY }]}
             update={this.update}
             onCompleted={() => Router.push('/') }

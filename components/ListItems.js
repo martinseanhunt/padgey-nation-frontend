@@ -5,6 +5,7 @@ import gql from 'graphql-tag'
 import { FaTrashAlt } from 'react-icons/fa'
 import { PER_PAGE } from '../config/config'
 import { GET_LIST_ITEMS_QUERY } from './Index'
+import { LIST_ITEMS_CONNECTION_QUERY } from './Pagination'
 
 const DELETE_LIST_ITEM_MUTATION = gql`
   mutation DELETE_LIST_ITEM_MUTATION($id: ID!) {
@@ -60,6 +61,9 @@ class ListItems extends Component {
               : listItem.title}
             <Mutation 
               mutation={DELETE_LIST_ITEM_MUTATION} 
+              // refetch the pagination data to update the item count / pages 
+              // imported from Pagination.js
+              refetchQueries={[{ query: LIST_ITEMS_CONNECTION_QUERY }]}
               variables={{ id: listItem.id }}
               update={this.update}
               >

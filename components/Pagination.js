@@ -52,3 +52,4 @@ const Pagination = (props) => {
 )}
 
 export default withRouter(Pagination)
+export { LIST_ITEMS_CONNECTION_QUERY }

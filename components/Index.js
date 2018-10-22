@@ -19,13 +19,24 @@ const GET_LIST_ITEMS_QUERY = gql`
 `
 
 class Index extends Component {  
-  render() {
-    const page = parseInt(this.props.router.query.page) || 1
+  getQueryVars = () => ({ 
+    skip: ((this.props.router.query.page || 1) - 1) * perPage 
+  })
+  
+  reloadCurrentPage = async () => {
+    const variables = this.getQueryVars()
 
-    console.log(page)
+    const myquery = await this.props.client.query({
+      query: GET_LIST_ITEMS_QUERY,
+      variables
+    })
+  }
+
+  render() {
+    const variables = this.getQueryVars()
 
     return (
-      <Query query={GET_LIST_ITEMS_QUERY} variables={{ skip: (page - 1) * perPage }}>
+      <Query query={GET_LIST_ITEMS_QUERY} variables={variables}>
         {({data, error, loading}) => {
           if(error) return console.log(error) || <div/>
 
@@ -44,7 +55,7 @@ class Index extends Component {
 
               {loading 
                 ? <div className="loading-items"><p>Loading...</p></div> 
-                : <ListItems listItems={listItems} CURRENT_PAGE_QUERY={GET_LIST_ITEMS_QUERY} />}
+                : <ListItems listItems={listItems} reloadCurrentPage={this.reloadCurrentPage} />}
               
               <Pagination />
             </div>

@@ -33,25 +33,16 @@ class ListItems extends Component {
 
     // Filter the deleted ListItem out of the cached data 
     // server returns deleted ListItem
-    data.listItems = data.listItems
+    const newListItems = data.listItems
       .filter(i => i.id !== payload.data.deleteListItem.id)
 
     // Write the current pages query with the deleted item 
     // filtered back to cache
     await cache.writeQuery({ 
-      query: GET_LIST_ITEMS_QUERY, data: data, variables: queryVars 
+      query: GET_LIST_ITEMS_QUERY, 
+      data: { listItems: newListItems }, 
+      variables: queryVars 
     })
-
-    // Refetch the query for the current page - refetch is coming from the  
-    // Query in Index.js and I've passed it down -- There's a bug in the current
-    // version of Apollo which is why we have to do this. For some reason refetch
-    // doesn't remember the variables like it says it should in the docs
-    // so we're passing the variables manually.
-    this.props.refetch({ variables: queryVars })
-
-    // Remember that when using refetch() like this you need to handle  
-    // the loading state for refetching differently than usual... see: 
-    // https://www.apollographql.com/docs/react/essentials/queries.html#loading
   }
   
   render() {

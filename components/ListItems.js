@@ -54,6 +54,7 @@ class ListItems extends Component {
                   <button 
                     onClick={() => confirm('Are you sure?') && deleteListItem()}
                     className="delete"  
+                    disabled={loading}
                   >
                     <FaTrashAlt />
                   </button>

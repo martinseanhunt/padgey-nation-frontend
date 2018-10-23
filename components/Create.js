@@ -32,7 +32,10 @@ class Create extends Component {
           <Mutation 
             mutation={CREATE_LIST_ITEM} 
             variables={{ title: this.state.title }}
+            // Refetch pagination data on creating an item to update item 
+            // & page counts. The Query is being imported from ./Pagination
             refetchQueries={[{ query: LIST_ITEMS_CONNECTION_QUERY }]}
+            // Call our helper function on update (it will be passed the chache)
             update={deleteListItemsFromCache}
             onCompleted={() => Router.push('/') }
           >

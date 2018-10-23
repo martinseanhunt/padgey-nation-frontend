@@ -16,13 +16,15 @@ const DELETE_LIST_ITEM_MUTATION = gql`
 `
 
 class ListItems extends Component {
-  onUpdate = (cache, itemId) => {
+  onUpdate = cache => {
+    // Call our helper function to delete item from cache
     deleteListItemsFromCache(cache)
 
-    // We need to call this otherwise the parent component won't 
-    // re render And the list items query won't be called so 
-    // we get left with an empty page
-    this.props.reloadCurrentPage(itemId)
+    // Deleting the item in this way doesn't trigger a re
+    // render of our Index.js component so we have to call
+    // refetch which is given to us by our Query component
+    // and passed down from Index.js via props
+    this.props.refetch()
   }
 
   render() {
@@ -42,6 +44,7 @@ class ListItems extends Component {
               mutation={DELETE_LIST_ITEM_MUTATION} 
               variables={{ id: listItem.id }}
               update={this.onUpdate}
+              // Don't forget to refetch the pagination data!
               refetchQueries={[ { query: LIST_ITEMS_CONNECTION_QUERY } ]}
               >
               {(deleteListItem, {error, loading}) => {

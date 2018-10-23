@@ -19,25 +19,14 @@ const GET_LIST_ITEMS_QUERY = gql`
 `
 
 class Index extends Component {  
-  getQueryVars = () => ({ 
-    skip: ((this.props.router.query.page || 1) - 1) * perPage 
-  })
-  
-  reloadCurrentPage = async () => {
-    const variables = this.getQueryVars()
-
-    const myquery = await this.props.client.query({
-      query: GET_LIST_ITEMS_QUERY,
-      variables
-    })
-  }
-
   render() {
-    const variables = this.getQueryVars()
+    const variables = { 
+      skip: ((this.props.router.query.page || 1) - 1) * perPage
+    }
 
     return (
       <Query query={GET_LIST_ITEMS_QUERY} variables={variables}>
-        {({data, error, loading}) => {
+        {({data, error, loading, refetch, networkStatus}) => {
           if(error) return console.log(error) || <div/>
 
           const { listItems } = data 
@@ -52,10 +41,12 @@ class Index extends Component {
                   <a className="add-link"><FaPlusSquare /></a>
                 </Link>
               </header>
-
-              {loading 
+              
+              { // if networkStatus is 4 then we're refetching so 
+                // show loading state
+              (loading || networkStatus === 4)
                 ? <div className="loading-items"><p>Loading...</p></div> 
-                : <ListItems listItems={listItems} reloadCurrentPage={this.reloadCurrentPage} />}
+                : <ListItems listItems={listItems} refetch={refetch} />}
               
               <Pagination />
             </div>

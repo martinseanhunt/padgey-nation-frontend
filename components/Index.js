@@ -21,9 +21,15 @@ const GET_LIST_ITEMS_QUERY = gql`
 class Index extends Component {  
   render() {
     return (
-      <Query query={GET_LIST_ITEMS_QUERY} variables={{
-        skip: ((this.props.router.query.page || 1) - 1) * perPage
-      }}>
+      <Query 
+        query={GET_LIST_ITEMS_QUERY} 
+        variables={{
+          skip: ((this.props.router.query.page || 1) - 1) * perPage
+        }}
+
+        // adding this so we can get the correct loading status on refetch
+        notifyOnNetworkStatusChange
+      >
         { // Pull refetch from our Query and pass it down to ListItems.js  
         ({data, error, loading, refetch, networkStatus}) => {
           if(error) return console.log(error) || <div/>
@@ -42,11 +48,7 @@ class Index extends Component {
               </header>
               
               { // if networkStatus is 4 then we're refetching so 
-                // show loading state. This networkStatus loading state 
-                // on refetch is not working with the current version of 
-                // apollo. But this is the documented method for handleing
-                // loading state on refetch so leaving it in, expecting a 
-                // fix in a later Apollo release 
+                // show loading state
               (loading || networkStatus === 4)
                 ? <div className="loading-items"><p>Loading...</p></div> 
                 : <ListItems listItems={listItems} refetch={refetch} />}
